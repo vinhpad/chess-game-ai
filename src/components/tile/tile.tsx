@@ -3,31 +3,23 @@ import './tile.css'
 
 interface Props {
     image? : string,
-    number : number
+    id : number,
+    color : string,
+    rootColor : string,
+    type : string
 }
 
-export default function Tile({number, image} : Props) {
-    if(number % 2 === 0 && image !== "") 
+export default function Tile({image, id, color, rootColor} : Props) {
+    color += "tile";
+    if(image !== "") 
         return ( 
-            <div className="tile blacktile">
-                <div style={{backgroundImage : `url(${image})`}} className="chesspiece"></div>
+            <div className={`tile ${color} ${rootColor}`}>
+                <div style={{backgroundImage : `url(${image})`}} className={`chesspiece ${color}`} id={id.toString()}></div>
             </div>
         )
-
-    if(number % 2 === 1 && image !== "")
-        return ( 
-            <div className="tile whitetile">
-                <div style={{backgroundImage : `url(${image})`}} className="chesspiece"></div>
-            </div>
-        )
-
-    if(number % 2 === 0 && image === "") 
+    if(image === "") 
             return (
-                <div className='tile blacktile'></div>
+                <div className={`tile ${color} ${rootColor}`} id={id.toString()}></div>
             )
 
-    if(number % 2 === 1 && image === "") 
-        return (
-            <div className='tile whitetile'></div>
-        )
 }
