@@ -16,6 +16,8 @@ let piece1 : Piece = initPiece;
 let piece2 : Piece = initPiece;
 let currentPiece : Piece = initPiece;
 let road : Piece[] = [];
+let bking_checkmate : Piece[] = [];
+let wking_checkmate : Piece[] = [];
 
 for(let p = 0; p < 2; p++) {
     const type = p === 0 ? "b" : "w";
@@ -55,12 +57,18 @@ for(let p = 0; p < 2; p++) {
 }
 
 let pieces = initalBoardState;
-console.log(pieces);
+//console.log(pieces);
 let turn = "w"; // Quân trắng chơi trước
 
 export default function Chessboard() {
-    function checkRoad(x : number, y : number, type : string) {
+    function checkRoad(x : number, y : number, rootx : number, rooty : number, type : string) {
         if(x < 0 || y < 0 || x > 7 || y > 7) return "wrong";
+        
+        if(pieces[getId(x, y)].image === "assets/images/king_b.png" && type === "w")
+            bking_checkmate.push(pieces[getId(rootx, rooty)]);
+        if(pieces[getId(x, y)].image === "assets/images/king_w.png" && type === "b") 
+            wking_checkmate.push(pieces[getId(rootx, rooty)]);
+        
         if(pieces[getId(x, y)].type === "blank") return "continue";
         if(pieces[getId(x, y)].type === type) return "wrong";
         if(pieces[getId(x, y)].type !== "blank" && pieces[getId(x, y)].type !== type) return "end";
@@ -70,6 +78,7 @@ export default function Chessboard() {
         return (x * 8 + y);
     }
     function loadRoad() {
+        road = [];
         const image = currentPiece.image;
         const x = currentPiece.x;
         const y = currentPiece.y;
@@ -78,8 +87,8 @@ export default function Chessboard() {
             if(x === 1) road.push(pieces[getId(x + 2, y)]);
             if(x < 7) {
                 if(pieces[getId(x + 1, y)].type === "blank") road.push(pieces[getId(x + 1, y)]);
-                if(y > 0) if(pieces[getId(x + 1, y - 1)].type === "w") road.push(pieces[getId(x + 1, y - 1)]);
-                if(y < 7) if(pieces[getId(x + 1, y + 1)].type === "w") road.push(pieces[getId(x + 1, y + 1)]);
+                if(checkRoad(x + 1, y - 1,x, y, type) === "end") road.push(pieces[getId(x + 1, y - 1)]);
+                if(checkRoad(x + 1, y + 1, x, y, type) === "end") road.push(pieces[getId(x + 1, y + 1)]);
             }
             return;
         }
@@ -88,29 +97,23 @@ export default function Chessboard() {
             if(x === 6) road.push(pieces[getId(x - 2, y)]);
             if(x > 0) {
                 if(pieces[getId(x - 1, y)].type === "blank") road.push(pieces[getId(x - 1, y)]);
-                if(y > 0) if(pieces[getId(x - 1, y - 1)].type === "b") road.push(pieces[getId(x - 1, y - 1)]);
-                if(y < 7) if(pieces[getId(x - 1, y + 1)].type === "b") road.push(pieces[getId(x - 1, y + 1)]);
+                if(checkRoad(x - 1, y - 1, x, y, type) === "end") road.push(pieces[getId(x - 1, y - 1)]);
+                if(checkRoad(x - 1, y + 1, x, y, type) === "end") road.push(pieces[getId(x - 1, y + 1)]);
             }
             return;
         }
 
         if(image === "assets/images/knight_b.png" ||image === "assets/images/knight_w.png") {
-            if(x < 6) {
-                if(y > 0) if(pieces[getId(x + 2, y - 1)].type !== type) road.push(pieces[getId(x + 2, y - 1)]);
-                if(y < 7) if(pieces[getId(x + 2, y + 1)].type !== type) road.push(pieces[getId(x + 2, y + 1)]);
+            if(checkRoad(x + 2, y - 1, x, y, type) !== "wrong") {
+                road.push(pieces[getId(x + 2, y - 1)]);
             }
-            if(x < 7) {
-                if(y > 1) if(pieces[getId(x + 1, y - 2)].type !== type) road.push(pieces[getId(x + 1, y - 2)]);
-                if(y < 6) if(pieces[getId(x + 1, y + 2)].type !== type) road.push(pieces[getId(x + 1, y + 2)]);
-            }
-            if(x > 1) {
-                if(y > 0) if(pieces[getId(x - 2, y - 1)].type !== type) road.push(pieces[getId(x - 2, y - 1)]);
-                if(y < 7) if(pieces[getId(x - 2, y + 1)].type !== type) road.push(pieces[getId(x - 2, y + 1)]);
-            }
-            if(x > 0) {
-                if(y > 1) if(pieces[getId(x - 1, y - 2)].type !== type) road.push(pieces[getId(x - 1, y - 2)]);
-                if(y < 6) if(pieces[getId(x - 1, y + 2)].type !== type) road.push(pieces[getId(x - 1, y + 2)]);
-            }
+            if(checkRoad(x + 2, y + 1, x, y, type) !== "wrong") road.push(pieces[getId(x + 2, y + 1)]);
+            if(checkRoad(x + 1, y - 2, x, y, type) !== "wrong") road.push(pieces[getId(x + 1, y - 2)]);
+            if(checkRoad(x + 1, y + 2, x, y, type) !== "wrong") road.push(pieces[getId(x + 1, y + 2)]);
+            if(checkRoad(x - 2, y - 1, x, y, type) !== "wrong") road.push(pieces[getId(x - 2, y - 1)]);
+            if(checkRoad(x - 2, y + 1, x, y, type) !== "wrong") road.push(pieces[getId(x - 2, y + 1)]);
+            if(checkRoad(x - 1, y - 2, x, y, type) !== "wrong") road.push(pieces[getId(x - 1, y - 2)]);
+            if(checkRoad(x - 1, y + 2, x, y, type) !== "wrong") road.push(pieces[getId(x - 1, y + 2)]);
         }
 
         if(image === "assets/images/bishop_b.png" || image === "assets/images/queen_b.png" || image === "assets/images/bishop_w.png" || image === "assets/images/queen_w.png") {
@@ -118,7 +121,7 @@ export default function Chessboard() {
             let y1 = y - 1;
             // đi sang trái và xuống dưới
             while(true) {
-                const val = checkRoad(x1, y1, type);
+                const val = checkRoad(x1, y1, x, y, type);
                 if(val === "wrong") break;
                 road.push(pieces[getId(x1, y1)]);
                 if(val === "end") break;
@@ -130,7 +133,7 @@ export default function Chessboard() {
             x1 = x + 1;
             y1 = y + 1;
             while(true) {
-                const val = checkRoad(x1, y1, type);
+                const val = checkRoad(x1, y1, x, y, type);
                 if(val === "wrong") break;
                 road.push(pieces[getId(x1, y1)]);
                 if(val === "end") break;
@@ -142,7 +145,7 @@ export default function Chessboard() {
             x1 = x - 1;
             y1 = y - 1;
             while(true) {
-                const val = checkRoad(x1, y1, type);
+                const val = checkRoad(x1, y1, x, y, type);
                 if(val === "wrong") break;
                 road.push(pieces[getId(x1, y1)]);
                 if(val === "end") break;
@@ -154,7 +157,7 @@ export default function Chessboard() {
             x1 = x - 1;
             y1 = y + 1;
             while(true) {
-                const val = checkRoad(x1, y1, type);
+                const val = checkRoad(x1, y1, x, y, type);
                 if(val === "wrong") break;
                 road.push(pieces[getId(x1, y1)]);
                 if(val === "end") break;
@@ -167,7 +170,7 @@ export default function Chessboard() {
             let y1 = y;
             // đi xuống dưới
             while(true) {
-                const val = checkRoad(x1, y1, type);
+                const val = checkRoad(x1, y1, x, y, type);
                 if(val === "wrong") break;
                 road.push(pieces[getId(x1, y1)]);
                 if(val === "end") break;
@@ -178,7 +181,7 @@ export default function Chessboard() {
             x1 = x - 1;
             y1 = y;
             while(true) {
-                const val = checkRoad(x1, y1, type);
+                const val = checkRoad(x1, y1, x, y, type);
                 if(val === "wrong") break;
                 road.push(pieces[getId(x1, y1)]);
                 if(val === "end") break;
@@ -189,7 +192,7 @@ export default function Chessboard() {
             x1 = x;
             y1 = y - 1;
             while(true) {
-                const val = checkRoad(x1, y1, type);
+                const val = checkRoad(x1, y1, x, y, type);
                 if(val === "wrong") break;
                 road.push(pieces[getId(x1, y1)]);
                 if(val === "end") break;
@@ -200,7 +203,7 @@ export default function Chessboard() {
             x1 = x;
             y1 = y + 1;
             while(true) {
-                const val = checkRoad(x1, y1, type);
+                const val = checkRoad(x1, y1, x, y, type);
                 if(val === "wrong") break;
                 road.push(pieces[getId(x1, y1)]);
                 if(val === "end") break;
@@ -208,19 +211,62 @@ export default function Chessboard() {
             }
         }
         if(image === "assets/images/king_b.png" || image === "assets/images/king_w.png") {
-            if(checkRoad(x + 1, y, type) !== "wrong") road.push(pieces[getId(x + 1, y)]);
-            if(checkRoad(x - 1, y, type) !== "wrong") road.push(pieces[getId(x - 1, y)]);
-            if(checkRoad(x, y + 1, type) !== "wrong") road.push(pieces[getId(x, y + 1)]);
-            if(checkRoad(x, y - 1, type) !== "wrong") road.push(pieces[getId(x, y - 1)]);
-            if(checkRoad(x + 1, y + 1, type) !== "wrong") road.push(pieces[getId(x + 1, y + 1)]);
-            if(checkRoad(x + 1, y - 1, type) !== "wrong") road.push(pieces[getId(x + 1, y - 1)]);
-            if(checkRoad(x - 1, y + 1, type) !== "wrong") road.push(pieces[getId(x - 1, y + 1)]);
-            if(checkRoad(x - 1, y - 1, type) !== "wrong") road.push(pieces[getId(x - 1, y - 1)]);
+            if(checkRoad(x + 1, y, x, y, type) !== "wrong") road.push(pieces[getId(x + 1, y)]);
+            if(checkRoad(x - 1, y, x, y, type) !== "wrong") road.push(pieces[getId(x - 1, y)]);
+            if(checkRoad(x, y + 1, x, y, type) !== "wrong") road.push(pieces[getId(x, y + 1)]);
+            if(checkRoad(x, y - 1, x, y, type) !== "wrong") road.push(pieces[getId(x, y - 1)]);
+            if(checkRoad(x + 1, y + 1, x, y, type) !== "wrong") road.push(pieces[getId(x + 1, y + 1)]);
+            if(checkRoad(x + 1, y - 1, x, y, type) !== "wrong") road.push(pieces[getId(x + 1, y - 1)]);
+            if(checkRoad(x - 1, y + 1, x, y, type) !== "wrong") road.push(pieces[getId(x - 1, y + 1)]);
+            if(checkRoad(x - 1, y - 1, x, y, type) !== "wrong") road.push(pieces[getId(x - 1, y - 1)]);
         }
     }
 
-    
+    function setCheckmate() {
+        const oldCurrentPiece = currentPiece;
+        bking_checkmate = [];
+        wking_checkmate = [];
+        pieces.map((piece) => {
+            if(piece.type !== "blank") {
+                currentPiece = piece;
+                loadRoad();
+            }
+            return piece;
+        });
+        currentPiece = oldCurrentPiece;
+
+        //let bking_id : number = -1;
+        //let wking_id : number = -1;
+        /*
+        pieces.map((piece) => {
+            if(piece.image === "assets/images/king_b.png") bking_id = getId(piece.x, piece.y);
+            if(piece.image === "assets/images/king_w.png") wking_id = getId(piece.x, piece.y);
+            return piece;
+        });
+        */
+        if(bking_checkmate.length !== 0) {
+            console.log("bking_checkmate");
+            console.log(bking_checkmate.length);
+        }
+        if(wking_checkmate.length !== 0) {
+            console.log("wking_checkmate");    
+            console.log(wking_checkmate.length);
+        }
+        bking_checkmate.map((bpiece) => {
+            let piece = pieces[getId(bpiece.x, bpiece.y)];
+            if(piece.color !== "red") piece.color = "purple";
+            return bpiece;
+        })
+
+        wking_checkmate.map((wpiece) => {
+            let piece = pieces[getId(wpiece.x, wpiece.y)];
+            if(piece.color !== "red") piece.color = "blue";
+            return wpiece;
+        })
+    }
+
     function rerenderBoard() {
+        setCheckmate();
         let initBoard = [];
         pieces.map((p) => {
             initBoard.push(<Tile key={`${p.x},${p.y}`} image={p.image} id={p.x * 8 + p.y} color={p.color} rootColor={p.rootcolor} type={p.type} />);
@@ -247,10 +293,10 @@ export default function Chessboard() {
 
     function grabPiece(e : React.MouseEvent) {
         const element = e.target as HTMLElement;
-        console.log(element.classList.toString());
+        //console.log(element.classList.toString());
         if(element.classList.contains("chesspiece")) {
             if(element.classList.contains("redtile") === false) {
-                console.log("red");
+                //console.log("red");
                 road = [];
                 currentPiece = pieces[parseInt(element.id)];
                 if(currentPiece.type !== turn) {
@@ -262,10 +308,10 @@ export default function Chessboard() {
                     return;
                 }
                 piece1 = {image : currentPiece.image, x : currentPiece.x, y : currentPiece.y, type : currentPiece.type, color : "red", rootcolor : currentPiece.rootcolor};
-                console.log(piece1);
+                //console.log(piece1);
                 road.push(currentPiece);
                 loadRoad();
-                console.log(road.length);
+                //console.log(road.length);
                 road.map((piece) => {
                     pieces[getId(piece.x, piece.y)].color = "red";
                     return piece;
@@ -277,7 +323,7 @@ export default function Chessboard() {
         if(element.classList.contains("redtile") === true) {
             currentPiece = pieces[parseInt(element.id)];
             piece2 = {image : currentPiece.image, x : currentPiece.x, y : currentPiece.y, type : currentPiece.type, color : "red", rootcolor : currentPiece.rootcolor};
-            console.log(piece2);
+            //console.log(piece2);
             initalBoardState = pieces;
             pieces = initalBoardState.map((piece) => {
                 const newPiece = {
@@ -289,11 +335,13 @@ export default function Chessboard() {
         }
 
         if(piece1 !== initPiece && piece2 !== initPiece) {
-            console.log("run");
+            //console.log("run");
+            bking_checkmate = [];
+            wking_checkmate = [];
             if(piece1.x === piece2.x && piece1.y === piece2.y) {
                 piece1 = initPiece;
                 piece2 = initPiece;
-                console.log("same");
+                //console.log("same");
             } 
             else {
                 initalBoardState = pieces;
@@ -303,14 +351,14 @@ export default function Chessboard() {
                         newPiece.image = "";
                         newPiece.type = "blank";
                         newPiece.color = newPiece.rootcolor;
-                        console.log(`${piece.x}, ${piece.y}`);
+                        //console.log(`${piece.x}, ${piece.y}`);
                     }
                     if(piece.x === piece2.x && piece.y === piece2.y) {
                         newPiece.image = piece1.image;
                         newPiece.type = piece1.type;
                         newPiece.color = newPiece.rootcolor;
-                        console.log(`${piece.x}, ${piece.y}`);
-                        console.log(newPiece);
+                        //console.log(`${piece.x}, ${piece.y}`);
+                        //console.log(newPiece);
                     }
                     return newPiece;
                 });
