@@ -74,18 +74,11 @@ export default function Chessboard() {
     const w_king = [[1, 0], [1, 1], [1, -1], [0, 1], [0, -1], [-1, -1], [-1, 0], [-1, 1]];
     */
 
-    function checkRoad(piece : Piece) {
-        const x = piece.x;
-        const y = piece.y;
-        if(x < 0 || y < 0 || x > 7 || y > 7) return "wrong"
-        let res = "continue";
-        pieces.forEach((p) => {
-            if(p.x === x && p.y === y) {
-                if(p.image !== "" && p.type !== turn) res = "end";
-                if(p.image !== "" && p.type === turn) res = "wrong";
-            }
-        });
-        return res;
+    function checkRoad(x : number, y : number, type : string) {
+        if(x < 0 || y < 0 || x > 7 || y > 7) return "wrong";
+        if(pieces[getId(x, y)].type === "blank") return "continue";
+        if(pieces[getId(x, y)].type === type) return "wrong";
+        if(pieces[getId(x, y)].type !== "blank" && pieces[getId(x, y)].type !== type) return "end";
     }
 
     function getId(x : number, y : number) {
@@ -124,6 +117,55 @@ export default function Chessboard() {
                     if(y < 6) if(pieces[getId(x - 1, y + 2)].type !== type) road.push(pieces[getId(x - 1, y + 2)]);
                 }
             }
+            if(image === "assets/images/bishop_b.png") {
+                let x1 = x + 1;
+                let y1 = y - 1;
+                // đi sang trái và xuống dưới
+                while(true) {
+                    const val = checkRoad(x1, y1, type);
+                    if(val === "wrong") break;
+                    road.push(pieces[getId(x1, y1)]);
+                    if(val === "end") break;
+                    x1 += 1;
+                    y1 -= 1;
+                }
+
+                // đi sang phải và xuông dưới
+                x1 = x + 1;
+                y1 = y + 1;
+                while(true) {
+                    const val = checkRoad(x1, y1, type);
+                    if(val === "wrong") break;
+                    road.push(pieces[getId(x1, y1)]);
+                    if(val === "end") break;
+                    x1 += 1;
+                    y1 += 1;
+                }
+
+                // đi sang trái và lên trên
+                x1 = x - 1;
+                y1 = y - 1;
+                while(true) {
+                    const val = checkRoad(x1, y1, type);
+                    if(val === "wrong") break;
+                    road.push(pieces[getId(x1, y1)]);
+                    if(val === "end") break;
+                    x1 -= 1;
+                    y1 -= 1;
+                }
+
+                // đi sang phải và lên trên
+                x1 = x - 1;
+                y1 = y + 1;
+                while(true) {
+                    const val = checkRoad(x1, y1, type);
+                    if(val === "wrong") break;
+                    road.push(pieces[getId(x1, y1)]);
+                    if(val === "end") break;
+                    x1 -= 1;
+                    y1 += 1;
+                }
+            }
         }
         else {
             if(image === "assets/images/pawn_w.png") {
@@ -150,6 +192,56 @@ export default function Chessboard() {
                 if(x > 0) {
                     if(y > 1) if(pieces[getId(x - 1, y - 2)].type !== type) road.push(pieces[getId(x - 1, y - 2)]);
                     if(y < 6) if(pieces[getId(x - 1, y + 2)].type !== type) road.push(pieces[getId(x - 1, y + 2)]);
+                }
+            }
+
+            if(image === "assets/images/bishop_w.png") {
+                let x1 = x + 1;
+                let y1 = y - 1;
+                // đi sang trái và xuống dưới
+                while(true) {
+                    const val = checkRoad(x1, y1, type);
+                    if(val === "wrong") break;
+                    road.push(pieces[getId(x1, y1)]);
+                    if(val === "end") break;
+                    x1 += 1;
+                    y1 -= 1;
+                }
+
+                // đi sang phải và xuông dưới
+                x1 = x + 1;
+                y1 = y + 1;
+                while(true) {
+                    const val = checkRoad(x1, y1, type);
+                    if(val === "wrong") break;
+                    road.push(pieces[getId(x1, y1)]);
+                    if(val === "end") break;
+                    x1 += 1;
+                    y1 += 1;
+                }
+
+                // đi sang trái và lên trên
+                x1 = x - 1;
+                y1 = y - 1;
+                while(true) {
+                    const val = checkRoad(x1, y1, type);
+                    if(val === "wrong") break;
+                    road.push(pieces[getId(x1, y1)]);
+                    if(val === "end") break;
+                    x1 -= 1;
+                    y1 -= 1;
+                }
+
+                // đi sang phải và lên trên
+                x1 = x - 1;
+                y1 = y + 1;
+                while(true) {
+                    const val = checkRoad(x1, y1, type);
+                    if(val === "wrong") break;
+                    road.push(pieces[getId(x1, y1)]);
+                    if(val === "end") break;
+                    x1 -= 1;
+                    y1 += 1;
                 }
             }
         }
