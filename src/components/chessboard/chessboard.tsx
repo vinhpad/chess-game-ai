@@ -106,6 +106,24 @@ export default function Chessboard() {
                 }
 
             }
+            if(image === "assets/images/knight_b.png") {
+                if(x < 6) {
+                    if(y > 0) if(pieces[getId(x + 2, y - 1)].type !== type) road.push(pieces[getId(x + 2, y - 1)]);
+                    if(y < 7) if(pieces[getId(x + 2, y + 1)].type !== type) road.push(pieces[getId(x + 2, y + 1)]);
+                }
+                if(x < 7) {
+                    if(y > 1) if(pieces[getId(x + 1, y - 2)].type !== type) road.push(pieces[getId(x + 1, y - 2)]);
+                    if(y < 6) if(pieces[getId(x + 1, y + 2)].type !== type) road.push(pieces[getId(x + 1, y + 2)]);
+                }
+                if(x > 1) {
+                    if(y > 0) if(pieces[getId(x - 2, y - 1)].type !== type) road.push(pieces[getId(x - 2, y - 1)]);
+                    if(y < 7) if(pieces[getId(x - 2, y + 1)].type !== type) road.push(pieces[getId(x - 2, y + 1)]);
+                }
+                if(x > 0) {
+                    if(y > 1) if(pieces[getId(x - 1, y - 2)].type !== type) road.push(pieces[getId(x - 1, y - 2)]);
+                    if(y < 6) if(pieces[getId(x - 1, y + 2)].type !== type) road.push(pieces[getId(x - 1, y + 2)]);
+                }
+            }
         }
         else {
             if(image === "assets/images/pawn_w.png") {
@@ -114,6 +132,24 @@ export default function Chessboard() {
                     if(pieces[getId(x - 1, y)].type === "blank") road.push(pieces[getId(x - 1, y)]);
                     if(y > 0) if(pieces[getId(x - 1, y - 1)].type === "b") road.push(pieces[getId(x - 1, y - 1)]);
                     if(y < 7) if(pieces[getId(x - 1, y + 1)].type === "b") road.push(pieces[getId(x - 1, y + 1)]);
+                }
+            }
+            if(image === "assets/images/knight_w.png") {
+                if(x < 6) {
+                    if(y > 0) if(pieces[getId(x + 2, y - 1)].type !== type) road.push(pieces[getId(x + 2, y - 1)]);
+                    if(y < 7) if(pieces[getId(x + 2, y + 1)].type !== type) road.push(pieces[getId(x + 2, y + 1)]);
+                }
+                if(x < 7) {
+                    if(y > 1) if(pieces[getId(x + 1, y - 2)].type !== type) road.push(pieces[getId(x + 1, y - 2)]);
+                    if(y < 6) if(pieces[getId(x + 1, y + 2)].type !== type) road.push(pieces[getId(x + 1, y + 2)]);
+                }
+                if(x > 1) {
+                    if(y > 0) if(pieces[getId(x - 2, y - 1)].type !== type) road.push(pieces[getId(x - 2, y - 1)]);
+                    if(y < 7) if(pieces[getId(x - 2, y + 1)].type !== type) road.push(pieces[getId(x - 2, y + 1)]);
+                }
+                if(x > 0) {
+                    if(y > 1) if(pieces[getId(x - 1, y - 2)].type !== type) road.push(pieces[getId(x - 1, y - 2)]);
+                    if(y < 6) if(pieces[getId(x - 1, y + 2)].type !== type) road.push(pieces[getId(x - 1, y + 2)]);
                 }
             }
         }
