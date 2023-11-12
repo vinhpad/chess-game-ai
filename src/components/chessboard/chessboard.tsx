@@ -59,21 +59,6 @@ console.log(pieces);
 let turn = "w"; // Quân trắng chơi trước
 
 export default function Chessboard() {
-    /*
-    const b_pawn = [[2, 0], [1, 0]]; 
-    const w_pawn = [[-2, 0], [-1, 0]]; 
-    const b_rook = [[1, 0], [-1, 0], [0, 1], [0, -1]];
-    const w_rook = [[1, 0], [-1, 0], [0, 1], [0, -1]];
-    const b_knight = [[2, 1], [2, -1], [1, 2], [1, -2], [-2, -1], [-2, 1], [-1, -2], [-1, 2]];
-    const w_knight = [[2, 1], [2, -1], [1, 2], [1, -2], [-2, -1], [-2, 1], [-1, -2], [-1, 2]];
-    const b_bishop = [[1, 1], [1, -1], [-1, 1], [-1, -1]];
-    const w_bishop = [[1, 1], [1, -1], [-1, 1], [-1, -1]];
-    const b_queen = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
-    const w_queen = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
-    const b_king = [[1, 0], [1, 1], [1, -1], [0, 1], [0, -1], [-1, -1], [-1, 0], [-1, 1]];
-    const w_king = [[1, 0], [1, 1], [1, -1], [0, 1], [0, -1], [-1, -1], [-1, 0], [-1, 1]];
-    */
-
     function checkRoad(x : number, y : number, type : string) {
         if(x < 0 || y < 0 || x > 7 || y > 7) return "wrong";
         if(pieces[getId(x, y)].type === "blank") return "continue";
@@ -89,281 +74,149 @@ export default function Chessboard() {
         const x = currentPiece.x;
         const y = currentPiece.y;
         const type = currentPiece.type;
-        if(type === "b") {
-            if(image === "assets/images/pawn_b.png") {
-                if(x === 1) road.push(pieces[getId(x + 2, y)]);
-                if(x < 7) {
-                    if(pieces[getId(x + 1, y)].type === "blank") road.push(pieces[getId(x + 1, y)]);
-                    if(y > 0) if(pieces[getId(x + 1, y - 1)].type === "w") road.push(pieces[getId(x + 1, y - 1)]);
-                    if(y < 7) if(pieces[getId(x + 1, y + 1)].type === "w") road.push(pieces[getId(x + 1, y + 1)]);
-                }
-
-            }
-            if(image === "assets/images/knight_b.png") {
-                if(x < 6) {
-                    if(y > 0) if(pieces[getId(x + 2, y - 1)].type !== type) road.push(pieces[getId(x + 2, y - 1)]);
-                    if(y < 7) if(pieces[getId(x + 2, y + 1)].type !== type) road.push(pieces[getId(x + 2, y + 1)]);
-                }
-                if(x < 7) {
-                    if(y > 1) if(pieces[getId(x + 1, y - 2)].type !== type) road.push(pieces[getId(x + 1, y - 2)]);
-                    if(y < 6) if(pieces[getId(x + 1, y + 2)].type !== type) road.push(pieces[getId(x + 1, y + 2)]);
-                }
-                if(x > 1) {
-                    if(y > 0) if(pieces[getId(x - 2, y - 1)].type !== type) road.push(pieces[getId(x - 2, y - 1)]);
-                    if(y < 7) if(pieces[getId(x - 2, y + 1)].type !== type) road.push(pieces[getId(x - 2, y + 1)]);
-                }
-                if(x > 0) {
-                    if(y > 1) if(pieces[getId(x - 1, y - 2)].type !== type) road.push(pieces[getId(x - 1, y - 2)]);
-                    if(y < 6) if(pieces[getId(x - 1, y + 2)].type !== type) road.push(pieces[getId(x - 1, y + 2)]);
-                }
-            }
-            if(image === "assets/images/bishop_b.png") {
-                let x1 = x + 1;
-                let y1 = y - 1;
-                // đi sang trái và xuống dưới
-                while(true) {
-                    const val = checkRoad(x1, y1, type);
-                    if(val === "wrong") break;
-                    road.push(pieces[getId(x1, y1)]);
-                    if(val === "end") break;
-                    x1 += 1;
-                    y1 -= 1;
-                }
-
-                // đi sang phải và xuông dưới
-                x1 = x + 1;
-                y1 = y + 1;
-                while(true) {
-                    const val = checkRoad(x1, y1, type);
-                    if(val === "wrong") break;
-                    road.push(pieces[getId(x1, y1)]);
-                    if(val === "end") break;
-                    x1 += 1;
-                    y1 += 1;
-                }
-
-                // đi sang trái và lên trên
-                x1 = x - 1;
-                y1 = y - 1;
-                while(true) {
-                    const val = checkRoad(x1, y1, type);
-                    if(val === "wrong") break;
-                    road.push(pieces[getId(x1, y1)]);
-                    if(val === "end") break;
-                    x1 -= 1;
-                    y1 -= 1;
-                }
-
-                // đi sang phải và lên trên
-                x1 = x - 1;
-                y1 = y + 1;
-                while(true) {
-                    const val = checkRoad(x1, y1, type);
-                    if(val === "wrong") break;
-                    road.push(pieces[getId(x1, y1)]);
-                    if(val === "end") break;
-                    x1 -= 1;
-                    y1 += 1;
-                }
-            }
-            if(image === "assets/images/rook_b.png") {
-                let x1 = x + 1;
-                let y1 = y;
-                // đi xuống dưới
-                while(true) {
-                    const val = checkRoad(x1, y1, type);
-                    if(val === "wrong") break;
-                    road.push(pieces[getId(x1, y1)]);
-                    if(val === "end") break;
-                    x1 += 1;
-                }
-
-                // đi lên trên
-                x1 = x - 1;
-                y1 = y;
-                while(true) {
-                    const val = checkRoad(x1, y1, type);
-                    if(val === "wrong") break;
-                    road.push(pieces[getId(x1, y1)]);
-                    if(val === "end") break;
-                    x1 -= 1;
-                }
-
-                // đi sang trái
-                x1 = x;
-                y1 = y - 1;
-                while(true) {
-                    const val = checkRoad(x1, y1, type);
-                    if(val === "wrong") break;
-                    road.push(pieces[getId(x1, y1)]);
-                    if(val === "end") break;
-                    y1 -= 1;
-                }
-
-                // đi sang phải
-                x1 = x;
-                y1 = y + 1;
-                while(true) {
-                    const val = checkRoad(x1, y1, type);
-                    if(val === "wrong") break;
-                    road.push(pieces[getId(x1, y1)]);
-                    if(val === "end") break;
-                    y1 += 1;
-                }
-            }
-        }
-        else {
-            if(image === "assets/images/pawn_w.png") {
-                if(x === 6) road.push(pieces[getId(x - 2, y)]);
-                if(x > 0) {
-                    if(pieces[getId(x - 1, y)].type === "blank") road.push(pieces[getId(x - 1, y)]);
-                    if(y > 0) if(pieces[getId(x - 1, y - 1)].type === "b") road.push(pieces[getId(x - 1, y - 1)]);
-                    if(y < 7) if(pieces[getId(x - 1, y + 1)].type === "b") road.push(pieces[getId(x - 1, y + 1)]);
-                }
-            }
-            if(image === "assets/images/knight_w.png") {
-                if(x < 6) {
-                    if(y > 0) if(pieces[getId(x + 2, y - 1)].type !== type) road.push(pieces[getId(x + 2, y - 1)]);
-                    if(y < 7) if(pieces[getId(x + 2, y + 1)].type !== type) road.push(pieces[getId(x + 2, y + 1)]);
-                }
-                if(x < 7) {
-                    if(y > 1) if(pieces[getId(x + 1, y - 2)].type !== type) road.push(pieces[getId(x + 1, y - 2)]);
-                    if(y < 6) if(pieces[getId(x + 1, y + 2)].type !== type) road.push(pieces[getId(x + 1, y + 2)]);
-                }
-                if(x > 1) {
-                    if(y > 0) if(pieces[getId(x - 2, y - 1)].type !== type) road.push(pieces[getId(x - 2, y - 1)]);
-                    if(y < 7) if(pieces[getId(x - 2, y + 1)].type !== type) road.push(pieces[getId(x - 2, y + 1)]);
-                }
-                if(x > 0) {
-                    if(y > 1) if(pieces[getId(x - 1, y - 2)].type !== type) road.push(pieces[getId(x - 1, y - 2)]);
-                    if(y < 6) if(pieces[getId(x - 1, y + 2)].type !== type) road.push(pieces[getId(x - 1, y + 2)]);
-                }
-            }
-
-            if(image === "assets/images/bishop_w.png") {
-                let x1 = x + 1;
-                let y1 = y - 1;
-                // đi sang trái và xuống dưới
-                while(true) {
-                    const val = checkRoad(x1, y1, type);
-                    if(val === "wrong") break;
-                    road.push(pieces[getId(x1, y1)]);
-                    if(val === "end") break;
-                    x1 += 1;
-                    y1 -= 1;
-                }
-
-                // đi sang phải và xuông dưới
-                x1 = x + 1;
-                y1 = y + 1;
-                while(true) {
-                    const val = checkRoad(x1, y1, type);
-                    if(val === "wrong") break;
-                    road.push(pieces[getId(x1, y1)]);
-                    if(val === "end") break;
-                    x1 += 1;
-                    y1 += 1;
-                }
-
-                // đi sang trái và lên trên
-                x1 = x - 1;
-                y1 = y - 1;
-                while(true) {
-                    const val = checkRoad(x1, y1, type);
-                    if(val === "wrong") break;
-                    road.push(pieces[getId(x1, y1)]);
-                    if(val === "end") break;
-                    x1 -= 1;
-                    y1 -= 1;
-                }
-
-                // đi sang phải và lên trên
-                x1 = x - 1;
-                y1 = y + 1;
-                while(true) {
-                    const val = checkRoad(x1, y1, type);
-                    if(val === "wrong") break;
-                    road.push(pieces[getId(x1, y1)]);
-                    if(val === "end") break;
-                    x1 -= 1;
-                    y1 += 1;
-                }
-            }
-
-            if(image === "assets/images/rook_w.png") {
-                let x1 = x + 1;
-                let y1 = y;
-                // đi xuống dưới
-                while(true) {
-                    const val = checkRoad(x1, y1, type);
-                    if(val === "wrong") break;
-                    road.push(pieces[getId(x1, y1)]);
-                    if(val === "end") break;
-                    x1 += 1;
-                }
-
-                // đi lên trên
-                x1 = x - 1;
-                y1 = y;
-                while(true) {
-                    const val = checkRoad(x1, y1, type);
-                    if(val === "wrong") break;
-                    road.push(pieces[getId(x1, y1)]);
-                    if(val === "end") break;
-                    x1 -= 1;
-                }
-
-                // đi sang trái
-                x1 = x;
-                y1 = y - 1;
-                while(true) {
-                    const val = checkRoad(x1, y1, type);
-                    if(val === "wrong") break;
-                    road.push(pieces[getId(x1, y1)]);
-                    if(val === "end") break;
-                    y1 -= 1;
-                }
-
-                // đi sang phải
-                x1 = x;
-                y1 = y + 1;
-                while(true) {
-                    const val = checkRoad(x1, y1, type);
-                    if(val === "wrong") break;
-                    road.push(pieces[getId(x1, y1)]);
-                    if(val === "end") break;
-                    y1 += 1;
-                }
-            }
-        }
-        /*
-        const image = p.image;
         if(image === "assets/images/pawn_b.png") {
-            let res = [];
-            if(p.x === 1) res = b_pawn;
-            else res = [[1, 0]];
-            return res;
+            if(x === 1) road.push(pieces[getId(x + 2, y)]);
+            if(x < 7) {
+                if(pieces[getId(x + 1, y)].type === "blank") road.push(pieces[getId(x + 1, y)]);
+                if(y > 0) if(pieces[getId(x + 1, y - 1)].type === "w") road.push(pieces[getId(x + 1, y - 1)]);
+                if(y < 7) if(pieces[getId(x + 1, y + 1)].type === "w") road.push(pieces[getId(x + 1, y + 1)]);
+            }
+            return;
         }
+
         if(image === "assets/images/pawn_w.png") {
-            if(p.x === 6) return w_pawn;
-            else return [[-1, 0]]; 
+            if(x === 6) road.push(pieces[getId(x - 2, y)]);
+            if(x > 0) {
+                if(pieces[getId(x - 1, y)].type === "blank") road.push(pieces[getId(x - 1, y)]);
+                if(y > 0) if(pieces[getId(x - 1, y - 1)].type === "b") road.push(pieces[getId(x - 1, y - 1)]);
+                if(y < 7) if(pieces[getId(x - 1, y + 1)].type === "b") road.push(pieces[getId(x - 1, y + 1)]);
+            }
+            return;
         }
 
-        if(image === "assets/images/rook_b.png") return b_rook;
-        if(image === "assets/images/rook_w.png") return w_rook;
+        if(image === "assets/images/knight_b.png" ||image === "assets/images/knight_w.png") {
+            if(x < 6) {
+                if(y > 0) if(pieces[getId(x + 2, y - 1)].type !== type) road.push(pieces[getId(x + 2, y - 1)]);
+                if(y < 7) if(pieces[getId(x + 2, y + 1)].type !== type) road.push(pieces[getId(x + 2, y + 1)]);
+            }
+            if(x < 7) {
+                if(y > 1) if(pieces[getId(x + 1, y - 2)].type !== type) road.push(pieces[getId(x + 1, y - 2)]);
+                if(y < 6) if(pieces[getId(x + 1, y + 2)].type !== type) road.push(pieces[getId(x + 1, y + 2)]);
+            }
+            if(x > 1) {
+                if(y > 0) if(pieces[getId(x - 2, y - 1)].type !== type) road.push(pieces[getId(x - 2, y - 1)]);
+                if(y < 7) if(pieces[getId(x - 2, y + 1)].type !== type) road.push(pieces[getId(x - 2, y + 1)]);
+            }
+            if(x > 0) {
+                if(y > 1) if(pieces[getId(x - 1, y - 2)].type !== type) road.push(pieces[getId(x - 1, y - 2)]);
+                if(y < 6) if(pieces[getId(x - 1, y + 2)].type !== type) road.push(pieces[getId(x - 1, y + 2)]);
+            }
+        }
 
-        if(image === "assets/images/knight_b.png") return b_knight;
-        if(image === "assets/images/knight_w.png") return w_knight;
+        if(image === "assets/images/bishop_b.png" || image === "assets/images/queen_b.png" || image === "assets/images/bishop_w.png" || image === "assets/images/queen_w.png") {
+            let x1 = x + 1;
+            let y1 = y - 1;
+            // đi sang trái và xuống dưới
+            while(true) {
+                const val = checkRoad(x1, y1, type);
+                if(val === "wrong") break;
+                road.push(pieces[getId(x1, y1)]);
+                if(val === "end") break;
+                x1 += 1;
+                y1 -= 1;
+            }
 
-        if(image === "assets/images/bishop_b.png") return b_bishop;
-        if(image === "assets/images/bishop_w.png") return w_bishop;
+            // đi sang phải và xuông dưới
+            x1 = x + 1;
+            y1 = y + 1;
+            while(true) {
+                const val = checkRoad(x1, y1, type);
+                if(val === "wrong") break;
+                road.push(pieces[getId(x1, y1)]);
+                if(val === "end") break;
+                x1 += 1;
+                y1 += 1;
+            }
 
-        if(image === "assets/images/queen_b.png") return b_queen;
-        if(image === "assets/images/queen_w.png") return w_queen;
+            // đi sang trái và lên trên
+            x1 = x - 1;
+            y1 = y - 1;
+            while(true) {
+                const val = checkRoad(x1, y1, type);
+                if(val === "wrong") break;
+                road.push(pieces[getId(x1, y1)]);
+                if(val === "end") break;
+                x1 -= 1;
+                y1 -= 1;
+            }
 
-        if(image === "assets/images/king_b.png") return b_king;
-        if(image === "assets/images/king_w.png") return w_king;
-        */
+            // đi sang phải và lên trên
+            x1 = x - 1;
+            y1 = y + 1;
+            while(true) {
+                const val = checkRoad(x1, y1, type);
+                if(val === "wrong") break;
+                road.push(pieces[getId(x1, y1)]);
+                if(val === "end") break;
+                x1 -= 1;
+                y1 += 1;
+            }
+        }
+        if(image === "assets/images/rook_b.png" || image === "assets/images/queen_b.png" || image === "assets/images/rook_w.png" || image === "assets/images/queen_w.png") {
+            let x1 = x + 1;
+            let y1 = y;
+            // đi xuống dưới
+            while(true) {
+                const val = checkRoad(x1, y1, type);
+                if(val === "wrong") break;
+                road.push(pieces[getId(x1, y1)]);
+                if(val === "end") break;
+                x1 += 1;
+            }
+
+            // đi lên trên
+            x1 = x - 1;
+            y1 = y;
+            while(true) {
+                const val = checkRoad(x1, y1, type);
+                if(val === "wrong") break;
+                road.push(pieces[getId(x1, y1)]);
+                if(val === "end") break;
+                x1 -= 1;
+            }
+
+            // đi sang trái
+            x1 = x;
+            y1 = y - 1;
+            while(true) {
+                const val = checkRoad(x1, y1, type);
+                if(val === "wrong") break;
+                road.push(pieces[getId(x1, y1)]);
+                if(val === "end") break;
+                y1 -= 1;
+            }
+
+            // đi sang phải
+            x1 = x;
+            y1 = y + 1;
+            while(true) {
+                const val = checkRoad(x1, y1, type);
+                if(val === "wrong") break;
+                road.push(pieces[getId(x1, y1)]);
+                if(val === "end") break;
+                y1 += 1;
+            }
+        }
+        if(image === "assets/images/king_b.png" || image === "assets/images/king_w.png") {
+            if(checkRoad(x + 1, y, type) !== "wrong") road.push(pieces[getId(x + 1, y)]);
+            if(checkRoad(x - 1, y, type) !== "wrong") road.push(pieces[getId(x - 1, y)]);
+            if(checkRoad(x, y + 1, type) !== "wrong") road.push(pieces[getId(x, y + 1)]);
+            if(checkRoad(x, y - 1, type) !== "wrong") road.push(pieces[getId(x, y - 1)]);
+            if(checkRoad(x + 1, y + 1, type) !== "wrong") road.push(pieces[getId(x + 1, y + 1)]);
+            if(checkRoad(x + 1, y - 1, type) !== "wrong") road.push(pieces[getId(x + 1, y - 1)]);
+            if(checkRoad(x - 1, y + 1, type) !== "wrong") road.push(pieces[getId(x - 1, y + 1)]);
+            if(checkRoad(x - 1, y - 1, type) !== "wrong") road.push(pieces[getId(x - 1, y - 1)]);
+        }
     }
 
     
