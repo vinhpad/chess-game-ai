@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useParams } from 'react-router-dom'
 const socket = require('../connection/socket').socket;
 
-const JoinGameRoom = (gameId, userName, isCreator) => {
+const JoinGameRoom = (gameid, userName, isCreator) => {
     const idData = {
-        gameId: gameId, 
+        gameId: gameid, 
         userName: userName, 
         isCreator: isCreator
     }
@@ -12,8 +12,8 @@ const JoinGameRoom = (gameId, userName, isCreator) => {
 }
 
 const JoinGame = (props) => {
-    const gameId = useParams();
-    JoinGameRoom(gameId, props.userName, props.isCreator);
+    const gameid = useParams();
+    JoinGameRoom(gameid, props.userName, props.isCreator);
     return (
         <div>
             <h1 style = {{textAlign: "center"}}>Ae chơi cờ vui vẻ</h1>
