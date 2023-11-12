@@ -166,6 +166,51 @@ export default function Chessboard() {
                     y1 += 1;
                 }
             }
+            if(image === "assets/images/rook_b.png") {
+                let x1 = x + 1;
+                let y1 = y;
+                // đi xuống dưới
+                while(true) {
+                    const val = checkRoad(x1, y1, type);
+                    if(val === "wrong") break;
+                    road.push(pieces[getId(x1, y1)]);
+                    if(val === "end") break;
+                    x1 += 1;
+                }
+
+                // đi lên trên
+                x1 = x - 1;
+                y1 = y;
+                while(true) {
+                    const val = checkRoad(x1, y1, type);
+                    if(val === "wrong") break;
+                    road.push(pieces[getId(x1, y1)]);
+                    if(val === "end") break;
+                    x1 -= 1;
+                }
+
+                // đi sang trái
+                x1 = x;
+                y1 = y - 1;
+                while(true) {
+                    const val = checkRoad(x1, y1, type);
+                    if(val === "wrong") break;
+                    road.push(pieces[getId(x1, y1)]);
+                    if(val === "end") break;
+                    y1 -= 1;
+                }
+
+                // đi sang phải
+                x1 = x;
+                y1 = y + 1;
+                while(true) {
+                    const val = checkRoad(x1, y1, type);
+                    if(val === "wrong") break;
+                    road.push(pieces[getId(x1, y1)]);
+                    if(val === "end") break;
+                    y1 += 1;
+                }
+            }
         }
         else {
             if(image === "assets/images/pawn_w.png") {
@@ -241,6 +286,52 @@ export default function Chessboard() {
                     road.push(pieces[getId(x1, y1)]);
                     if(val === "end") break;
                     x1 -= 1;
+                    y1 += 1;
+                }
+            }
+
+            if(image === "assets/images/rook_w.png") {
+                let x1 = x + 1;
+                let y1 = y;
+                // đi xuống dưới
+                while(true) {
+                    const val = checkRoad(x1, y1, type);
+                    if(val === "wrong") break;
+                    road.push(pieces[getId(x1, y1)]);
+                    if(val === "end") break;
+                    x1 += 1;
+                }
+
+                // đi lên trên
+                x1 = x - 1;
+                y1 = y;
+                while(true) {
+                    const val = checkRoad(x1, y1, type);
+                    if(val === "wrong") break;
+                    road.push(pieces[getId(x1, y1)]);
+                    if(val === "end") break;
+                    x1 -= 1;
+                }
+
+                // đi sang trái
+                x1 = x;
+                y1 = y - 1;
+                while(true) {
+                    const val = checkRoad(x1, y1, type);
+                    if(val === "wrong") break;
+                    road.push(pieces[getId(x1, y1)]);
+                    if(val === "end") break;
+                    y1 -= 1;
+                }
+
+                // đi sang phải
+                x1 = x;
+                y1 = y + 1;
+                while(true) {
+                    const val = checkRoad(x1, y1, type);
+                    if(val === "wrong") break;
+                    road.push(pieces[getId(x1, y1)]);
+                    if(val === "end") break;
                     y1 += 1;
                 }
             }
