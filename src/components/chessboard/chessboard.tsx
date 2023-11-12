@@ -248,9 +248,6 @@ export default function Chessboard() {
     function grabPiece(e : React.MouseEvent) {
         const element = e.target as HTMLElement;
         console.log(element.classList.toString());
-        //if(piece1 === initPiece && element.classList.contains("chesspiece") === false) return;
-        //console.log(element.id.toString());
-        //console.log(pieces);
         if(element.classList.contains("chesspiece")) {
             if(element.classList.contains("redtile") === false) {
                 console.log("red");
@@ -274,52 +271,12 @@ export default function Chessboard() {
                     return piece;
                 });
                 rerenderBoard();
-                /*
-                let a = getArray(currentPiece);
-                for(let i = 0; i < a?.length; i++) {
-                    const x = a[i][0] + p.x;
-                    const y = a[i][1] + p.y;
-                    //console.log(piece1);
-                    let p2 : Piece = {image : "", x : x, y : y, type : "blank"};
-                    pieces.map((piece) => {
-                        if(piece.x === x && piece.y === y) {
-                            p2 = {image : piece.image, x : piece.x, y : piece.y, type : piece.type};
-                        }
-                        return piece;
-                    })
-                    //console.log(piece1);
-                    if(checkRoad(p2) !== "wrong") redPiece.push(p2); 
-                }
-                initalBoardState = pieces;
-                pieces = initalBoardState.map((piece) => {
-                    let newPiece = piece;
-                    redPiece.map((rpiece) => {
-                        if(newPiece.x === rpiece.x && newPiece.y === rpiece.y) {
-                            newPiece = {
-                                ...piece,
-                                color : "red",
-                            }
-                        }
-                        return rpiece;
-                    })
-                    //console.log(newPiece);
-                    return newPiece;
-                });
-                initalBoardState = pieces;
-                */
-
-                //console.log(initalBoardState);
-                //rerenderBoard();
-                //console.log("finish");
             }
         }  
 
         if(element.classList.contains("redtile") === true) {
-            //console.log(piece1);
-            //console.log(piece2);
             currentPiece = pieces[parseInt(element.id)];
             piece2 = {image : currentPiece.image, x : currentPiece.x, y : currentPiece.y, type : currentPiece.type, color : "red", rootcolor : currentPiece.rootcolor};
-            //console.log(piece1);
             console.log(piece2);
             initalBoardState = pieces;
             pieces = initalBoardState.map((piece) => {
@@ -329,24 +286,16 @@ export default function Chessboard() {
                 };
                 return newPiece;
             });
-            //console.log(initalBoardState);
-            //rerenderBoard();
         }
 
-        //console.log(piece1);
-        //console.log(piece2);
         if(piece1 !== initPiece && piece2 !== initPiece) {
             console.log("run");
-            //console.log(piece1);
-            //console.log(piece2);
             if(piece1.x === piece2.x && piece1.y === piece2.y) {
                 piece1 = initPiece;
                 piece2 = initPiece;
                 console.log("same");
             } 
             else {
-                //console.log(piece1);
-                //console.log(piece2);
                 initalBoardState = pieces;
                 pieces = initalBoardState.map((piece) => {
                     let newPiece = piece;
@@ -365,19 +314,14 @@ export default function Chessboard() {
                     }
                     return newPiece;
                 });
-                //console.log(initalBoardState.length);
                 piece1 = initPiece;
                 piece2 = initPiece;
                 if(turn === "w") turn = "b";
                 else turn = "w";
-                //rerenderBoard();
             }
         }
 
-        //console.log(piece1);
-        //console.log(piece2);
         rerenderBoard();
-        //console.log(pieces);
     }
 
     const [board, setBoard] = useState(function loadBoard() {

@@ -1,8 +1,8 @@
 .tile {
     display: grid;
     place-content: center;
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
 }
 
 .blacktile {
@@ -14,15 +14,15 @@
 }
 
 .redtile {
-    background-color: rgba(255, 0, 0, 0.568);
+    background-color: rgba(255, 0, 0, 0.34);
 }
 
 .chesspiece {
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
     background-repeat : no-repeat;
     background-position: center;
-    background-size: 60px;
+    background-size: 50px;
 }
 
 .chesspiece:hover {

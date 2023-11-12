@@ -1,6 +1,6 @@
 #App {
     display: grid;
-    place-content: center;
+    place-content: left;
     background-color: black;
-    height: 900;
+    height: 600px;
 }
