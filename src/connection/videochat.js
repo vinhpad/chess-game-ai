@@ -36,7 +36,7 @@ function VideoChat(props) {
         });
 
         peer.on('signal', data => {
-            socket.emit('callUser', {signal: data, to: caller});
+            socket.emit('callUser', {userToCall: id, signalData: data, from: props.mySocketId});
         });
 
         peer.on('stream', stream => {
@@ -91,7 +91,7 @@ function VideoChat(props) {
     } else if (receivingCall) {
         mainView = (
             <>
-                <p>{props.opponentUsername} is calling...</p>
+                <p>{props.opponentUserName} is calling...</p>
                 <button onClick={acceptCall}>
                     <p>Accept</p>
                 </button>
@@ -101,7 +101,7 @@ function VideoChat(props) {
     } else if (isCalling) {
         mainView = (
             <>
-                <p>Calling {props.opponentUsername}...</p>
+                <p>Calling {props.opponentUserName}...</p>
             </>
         )
         console.log("is calling...");
